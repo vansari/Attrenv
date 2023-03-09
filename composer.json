@@ -22,6 +22,26 @@
     "require-dev": {
         "devcirclede/env-reader": "^0.4.0",
         "phpunit/phpunit": "^10.0",
-        "symfony/var-dumper": "^6.2"
+        "symfony/var-dumper": "^6.2",
+        "overtrue/phplint": "^9.0",
+        "vimeo/psalm": "^5.7",
+        "slevomat/coding-standard": "^8.8"
+    },
+    "scripts": {
+        "lint": "vendor/bin/phplint src",
+        "phpcs": "vendor/bin/phpcs --standard=PSR12 src tests",
+        "psalm": "vendor/bin/psalm",
+        "unit": "vendor/bin/phpunit tests",
+        "test": [
+            "@lint",
+            "@phpcs",
+            "@psalm",
+            "@unit"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
