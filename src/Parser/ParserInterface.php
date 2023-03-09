@@ -6,7 +6,6 @@ namespace DevCircleDe\Attrenv\Parser;
 
 interface ParserInterface
 {
-
     /**
      * @psalm-param class-string $class
      */
