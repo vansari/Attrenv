@@ -12,6 +12,9 @@ use ReflectionClass;
  */
 class AttributeParser implements ParserInterface
 {
+    /**
+     * @psalm-param class-string $class
+     */
     public function parse(string $class): object
     {
         $reflClass = new ReflectionClass($class);

@@ -23,10 +23,18 @@ class ConstructorArgsParser implements ExplicitParserInterface
     ) {
     }
 
+    /**
+     * @psalm-param class-string $class
+     */
     public function parse(string $class): object
     {
         $reflClass = new \ReflectionClass($class);
-        $parameters = $reflClass->getConstructor()->getParameters();
+        $parameters = $reflClass->getConstructor()?->getParameters();
+
+        if (null === $parameters) {
+            return $reflClass->newInstance();
+        }
+
         $parameterBag = $this->createParameterBag($parameters);
 
         $metaDataCollection = array_map(

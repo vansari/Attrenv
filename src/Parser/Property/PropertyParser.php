@@ -21,6 +21,9 @@ class PropertyParser implements ExplicitParserInterface
     ) {
     }
 
+    /**
+     * @psalm-param class-string $class
+     */
     public function parse(mixed $class): object
     {
         $reflClass = new ReflectionClass($class);
@@ -47,7 +50,7 @@ class PropertyParser implements ExplicitParserInterface
         );
 
         foreach ($parsedProperties as $value) {
-            if (null === $value->getValue() && !$value->isNullable()) {
+            if (null === $value || (null === $value->getValue() && !$value->isNullable())) {
                 continue;
             }
             $reflProperty = $reflClass->getProperty($value->getName());

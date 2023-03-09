@@ -20,8 +20,12 @@ class MetaDataFactory
             return null;
         }
         $name = $reflection->getName();
+        /** @var \ReflectionUnionType|\ReflectionIntersectionType|\ReflectionNamedType|null $type */
         $type = $reflection->getType();
-        if (in_array($type, [null, \ReflectionIntersectionType::class])) {
+        if (null === $type) {
+            return null;
+        }
+        if ($type instanceof \ReflectionIntersectionType) {
             return null;
         }
         return new MetaData($name, $type, $attribute);

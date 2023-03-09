@@ -17,7 +17,9 @@ use DevCircleDe\EnvReader\Exception\NotFoundException;
  */
 class ValueFactory
 {
-    public function __construct(private ?EnvParser $envParser = null)
+    private EnvParser $envParser;
+
+    public function __construct(?EnvParser $envParser = null)
     {
         $this->envParser = $envParser ?? EnvParser::getInstance();
     }
@@ -31,15 +33,19 @@ class ValueFactory
             $envName = strtoupper(preg_replace('/([A-Z])/', '_$1', $propertyName));
         }
         if ($envType = $attr->getType()) {
+            if (null === $property->getType()) {
+                throw new \LogicException('Property has no typehint.');
+            }
             $envTypes = [new Type($envType, $property->getType()->allowsNull())];
         } else {
             $envTypes = $this->getVariableTypes($metaData->getType());
         }
+        // Try to find the best matching type
         foreach ($envTypes as $envType) {
             try {
                 return new Value(
                     $propertyName,
-                    $this->envParser->parse($envName, $envType->getType()),
+                    $this->getEnvParser()->parse($envName, $envType->getType()),
                     $envType->allowsNull()
                 );
             } catch (ConvertionException $exception) {
@@ -64,6 +70,9 @@ class ValueFactory
         $types = [];
         if ($type instanceof \ReflectionUnionType) {
             foreach ($type->getTypes() as $unionType) {
+                if ($unionType instanceof \ReflectionIntersectionType) {
+                    continue;
+                }
                 $types = array_merge($types, $this->getVariableTypes($unionType));
             }
 
@@ -75,5 +84,13 @@ class ValueFactory
         }
 
         return [new Type($type->getName(), $type->allowsNull())];
+    }
+
+    /**
+     * @return EnvParser
+     */
+    public function getEnvParser(): EnvParser
+    {
+        return $this->envParser;
     }
 }
