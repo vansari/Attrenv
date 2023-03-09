@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DevCircleDe\Attrenv\Util;
@@ -12,7 +13,7 @@ class MetaDataFactory
      * @param \ReflectionProperty|\ReflectionParameter $reflection
      * @return MetaData|null
      */
-    public function create(\ReflectionProperty|\ReflectionParameter $reflection): ?MetaData
+    public function createMetaDataFromReflection(\ReflectionProperty|\ReflectionParameter $reflection): ?MetaData
     {
         $attribute = $reflection->getAttributes(EnvironmentValue::class)[0] ?? null;
         if (null === $attribute) {

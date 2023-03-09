@@ -1,10 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DevCircleDe\Attrenv\Tests\data;
 
+use DevCircleDe\Attrenv\Attribute\AttributeEnvParser;
 use DevCircleDe\Attrenv\Attribute\EnvironmentValue;
+use DevCircleDe\Attrenv\Parser\Constructor\ConstructorArgsParser;
+use DevCircleDe\Attrenv\Util\MetaDataFactory;
+use DevCircleDe\Attrenv\Util\ValueFactory;
 
+#[AttributeEnvParser(new ConstructorArgsParser(new MetaDataFactory(), new ValueFactory()))]
 class TestClassWithAttributeInConstructor
 {
     public function __construct(
@@ -17,7 +23,8 @@ class TestClassWithAttributeInConstructor
         private readonly array $options = [],
         #[EnvironmentValue('json', 'DB_OPTION_JSON')]
         private readonly array $optionsFromJson = [],
-    ) {}
+    ) {
+    }
     /**
      * @return string|null
      */

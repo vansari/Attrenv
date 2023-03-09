@@ -1,15 +1,20 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DevCircleDe\Attrenv\ValueObject;
 
 final class MetaData
 {
+    /**
+     * @psalm-param \ReflectionAttribute<\DevCircleDe\Attrenv\Attribute\EnvironmentValue> $attribute
+     */
     public function __construct(
         private readonly string $name,
         private readonly \ReflectionNamedType|\ReflectionUnionType $type,
-        private \ReflectionAttribute $attribute,
-    ) {}
+        private readonly \ReflectionAttribute $attribute,
+    ) {
+    }
 
     /**
      * @return string

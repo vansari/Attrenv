@@ -1,16 +1,27 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DevCircleDe\Attrenv\Parser\Constructor;
 
-use DevCircleDe\Attrenv\Parser\AbstractParser;
+use DevCircleDe\Attrenv\Parser\ExplicitParserInterface;
+use DevCircleDe\Attrenv\Util\MetaDataFactory;
+use DevCircleDe\Attrenv\Util\ValueFactory;
 use DevCircleDe\Attrenv\ValueObject\MetaData;
 use DevCircleDe\Attrenv\ValueObject\ParameterValue;
 use DevCircleDe\Attrenv\ValueObject\ParameterValueBag;
 use DevCircleDe\Attrenv\ValueObject\Value;
 
-class ConstructorArgsParser extends AbstractParser
+/**
+ * @psalm-api
+ */
+class ConstructorArgsParser implements ExplicitParserInterface
 {
+    public function __construct(
+        private readonly MetaDataFactory $metaDataFactory,
+        private readonly ValueFactory $valueFactory,
+    ) {
+    }
 
     public function parse(string $class): object
     {
@@ -19,20 +30,21 @@ class ConstructorArgsParser extends AbstractParser
         $parameterBag = $this->createParameterBag($parameters);
 
         $metaDataCollection = array_map(
-                fn (\ReflectionParameter $reflParam): ?MetaData => $this->metaDataFactory->create($reflParam),
-                $parameters
-            );
+            fn (\ReflectionParameter $reflParam): ?MetaData
+                => $this->getMetaDataFactory()->createMetaDataFromReflection($reflParam),
+            $parameters
+        );
 
         $parsedValues = array_map(
-                function (?MetaData $metaData) use ($reflClass): ?Value {
-                    if (null === $metaData) {
-                        return null;
-                    }
-                    $reflProperty = $reflClass->getProperty($metaData->getName());
-                    return $this->propertyFactory->create($metaData, $reflProperty, $this->getEnvParser());
-                },
-                $metaDataCollection
-            );
+            function (?MetaData $metaData) use ($reflClass): ?Value {
+                if (null === $metaData) {
+                    return null;
+                }
+                $reflProperty = $reflClass->getProperty($metaData->getName());
+                return $this->getValueFactory()->createValueFromMetaData($metaData, $reflProperty);
+            },
+            $metaDataCollection
+        );
 
         $this->setParameterValues($parsedValues, $parameterBag);
         if (count($parameters) !== count(($fetchValues = $parameterBag->fetchValues()))) {
@@ -80,14 +92,33 @@ class ConstructorArgsParser extends AbstractParser
             if (null === $value) {
                 if (!$parameterValue->hasDefaultValue()) {
                     if ($parameterValue->isNullable()) {
-                        $parameterValue->setValue(new Value($parameterValue->getName(), null, $parameterValue->isNullable()));
+                        $parameterValue->setValue(
+                            new Value(
+                                $parameterValue->getName(),
+                                null,
+                                $parameterValue->isNullable()
+                            )
+                        );
                         continue;
                     }
-                    throw new \LogicException("No value was set via EnvironmentValue. Constructor Parameter at index $index has no default value and is not nullable.");
+                    throw new \LogicException(
+                        "No value was set via EnvironmentValue. Constructor Parameter at index $index has"
+                         . "no default value and is not nullable."
+                    );
                 }
                 continue;
             }
             $parameterValue->setValue($value);
         }
+    }
+
+    public function getMetaDataFactory(): MetaDataFactory
+    {
+        return $this->metaDataFactory;
+    }
+
+    public function getValueFactory(): ValueFactory
+    {
+        return $this->valueFactory;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DevCircleDe\Attrenv\Tests\Parser\Property;
@@ -6,7 +7,7 @@ namespace DevCircleDe\Attrenv\Tests\Parser\Property;
 use DevCircleDe\Attrenv\Parser\Property\PropertyParser;
 use DevCircleDe\Attrenv\Tests\data\TestClassWithProperties;
 use DevCircleDe\Attrenv\Util\MetaDataFactory;
-use DevCircleDe\Attrenv\Util\PropertyFactory;
+use DevCircleDe\Attrenv\Util\ValueFactory;
 use DevCircleDe\EnvReader\EnvParser;
 use PHPUnit\Framework\TestCase;
 
@@ -15,7 +16,6 @@ use PHPUnit\Framework\TestCase;
  */
 class PropertyParserTest extends TestCase
 {
-
     /**
      * @covers ::parse
      */
@@ -26,12 +26,15 @@ class PropertyParserTest extends TestCase
         putenv('DATABASE_PORT=1234');
         putenv("DB_OPTION_JSON={\"name\":\"secretName\", \"values\":[{\"value1\":123},{\"value2\":\"baz\"}]}");
 
-        $parser = new PropertyParser(EnvParser::getInstance(), new MetaDataFactory(), new PropertyFactory());
+        $parser = new PropertyParser(new MetaDataFactory(), new ValueFactory());
         /** @var TestClassWithProperties $testClassObject */
         $testClassObject = $parser->parse(TestClassWithProperties::class);
         $this->assertSame('fooBar', $testClassObject->getDatabaseName());
         $this->assertSame('s€cr€t', $testClassObject->getDatabasePassword());
         $this->assertSame(1234, $testClassObject->getDatabasePort());
-        $this->assertEquals(['name' => 'secretName', 'values' => [['value1' => 123], ['value2' => 'baz']]], $testClassObject->getOptionsFromJson());
+        $this->assertEquals(
+            ['name' => 'secretName', 'values' => [['value1' => 123], ['value2' => 'baz']]],
+            $testClassObject->getOptionsFromJson()
+        );
     }
 }

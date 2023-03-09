@@ -1,18 +1,30 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DevCircleDe\Attrenv\Parser\Property;
 
-use DevCircleDe\Attrenv\Parser\AbstractParser;
+use DevCircleDe\Attrenv\Parser\ExplicitParserInterface;
+use DevCircleDe\Attrenv\Util\MetaDataFactory;
+use DevCircleDe\Attrenv\Util\ValueFactory;
 use DevCircleDe\Attrenv\ValueObject\MetaData;
 use ReflectionClass;
 
-class PropertyParser extends AbstractParser
+/**
+ * @psalm-api
+ */
+class PropertyParser implements ExplicitParserInterface
 {
+    public function __construct(
+        private readonly MetaDataFactory $metaDataFactory,
+        private readonly ValueFactory $valueFactory,
+    ) {
+    }
+
     public function parse(mixed $class): object
     {
         $reflClass = new ReflectionClass($class);
-        if($reflClass->getConstructor()?->getParameters()) {
+        if ($reflClass->getConstructor()?->getParameters()) {
             throw new \InvalidArgumentException('Could not use class with Constructor Args');
         }
         $class = $reflClass->newInstance();
@@ -20,7 +32,8 @@ class PropertyParser extends AbstractParser
 
         $properties = array_filter(
             array_map(
-                fn (\ReflectionProperty $reflProp) => $this->metaDataFactory->create($reflProp),
+                fn (\ReflectionProperty $reflProp) =>
+                    $this->getMetaDataFactory()->createMetaDataFromReflection($reflProp),
                 $reflProps
             )
         );
@@ -28,7 +41,7 @@ class PropertyParser extends AbstractParser
         $parsedProperties = array_map(
             function (MetaData $metaData) use ($reflClass) {
                 $reflProperty = $reflClass->getProperty($metaData->getName());
-                return $this->propertyFactory->create($metaData, $reflProperty, $this->getEnvParser());
+                return $this->getValueFactory()->createValueFromMetaData($metaData, $reflProperty);
             },
             $properties
         );
@@ -42,5 +55,15 @@ class PropertyParser extends AbstractParser
         }
 
         return $class;
+    }
+
+    public function getMetaDataFactory(): MetaDataFactory
+    {
+        return $this->metaDataFactory;
+    }
+
+    public function getValueFactory(): ValueFactory
+    {
+        return $this->valueFactory;
     }
 }

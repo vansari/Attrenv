@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DevCircleDe\Attrenv\ValueObject;
@@ -14,7 +15,6 @@ final class ParameterValue
         private readonly bool $hasDefaultValue = false,
         private readonly mixed $defaultValue = null
     ) {
-
     }
 
     public function setValue(Value $value): void

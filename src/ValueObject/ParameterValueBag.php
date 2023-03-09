@@ -1,14 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DevCircleDe\Attrenv\ValueObject;
 
 class ParameterValueBag
 {
-
     private array $parameters = [];
 
-    public function addParameterValueAtIndex(ParameterValue $value, int $index): void {
+    public function addParameterValueAtIndex(ParameterValue $value, int $index): void
+    {
         if (array_key_exists($index, $this->parameters)) {
             throw new \InvalidArgumentException('Parameter already exists at Index ' . $index);
         }
@@ -36,16 +37,16 @@ class ParameterValueBag
     public function fetchValues(): array
     {
         $values = [];
-        foreach ($this->getParameterValues() as $index => $parameterValue) {
+        foreach ($this->getParameterValues() as $parameterValue) {
             if (null === $parameterValue->getValue()) {
                 if ($parameterValue->hasDefaultValue()) {
-                    $values[$index] = $parameterValue->getDefaultValue();
+                    $values[$parameterValue->getIndex()] = $parameterValue->getDefaultValue();
                 } elseif ($parameterValue->isNullable()) {
-                    $values[$index] = null;
+                    $values[$parameterValue->getIndex()] = null;
                 }
                 continue;
             }
-            $values[$index] = $parameterValue->getValue()->getValue();
+            $values[$parameterValue->getIndex()] = $parameterValue->getValue()->getValue();
         }
 
         return $values;
