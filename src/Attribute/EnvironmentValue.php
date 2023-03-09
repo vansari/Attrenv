@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DevCircleDe\Attrenv\Attribute;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY|\Attribute::TARGET_PARAMETER)]
-class EnvironmentProperty
+class EnvironmentValue
 {
     public function __construct(private readonly null|string $type = null, private readonly null|string $envName = null,)
     {

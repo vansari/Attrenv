@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DevCircleDe\Attrenv\Util;
 
-use DevCircleDe\Attrenv\Attribute\EnvironmentProperty;
+use DevCircleDe\Attrenv\Attribute\EnvironmentValue;
 use DevCircleDe\Attrenv\ValueObject\MetaData;
 use DevCircleDe\Attrenv\ValueObject\Type;
 use DevCircleDe\Attrenv\ValueObject\Value;
@@ -16,7 +16,7 @@ class PropertyFactory
 
     public function create(MetaData $metaData, \ReflectionProperty $property, EnvParser $envParser): ?Value
     {
-        /** @var EnvironmentProperty $attr */
+        /** @var EnvironmentValue $attr */
         $attr = $metaData->getAttribute()->newInstance();
         $propertyName = $metaData->getName();
         if (null === ($envName = $attr->getEnvName())) {

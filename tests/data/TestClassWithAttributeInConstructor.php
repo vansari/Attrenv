@@ -3,19 +3,19 @@ declare(strict_types=1);
 
 namespace DevCircleDe\Attrenv\Tests\data;
 
-use DevCircleDe\Attrenv\Attribute\EnvironmentProperty;
+use DevCircleDe\Attrenv\Attribute\EnvironmentValue;
 
 class TestClassWithAttributeInConstructor
 {
     public function __construct(
-        #[EnvironmentProperty]
+        #[EnvironmentValue]
         private readonly string $databaseName,
-        #[EnvironmentProperty]
+        #[EnvironmentValue]
         private readonly string $databasePassword,
-        #[EnvironmentProperty]
+        #[EnvironmentValue]
         private readonly int $databasePort,
         private readonly array $options = [],
-        #[EnvironmentProperty('json', 'DB_OPTION_JSON')]
+        #[EnvironmentValue('json', 'DB_OPTION_JSON')]
         private readonly array $optionsFromJson = [],
     ) {}
     /**

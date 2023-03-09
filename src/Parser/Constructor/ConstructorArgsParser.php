@@ -83,7 +83,7 @@ class ConstructorArgsParser extends AbstractParser
                         $parameterValue->setValue(new Value($parameterValue->getName(), null, $parameterValue->isNullable()));
                         continue;
                     }
-                    throw new \LogicException("No value was set via EnvironmentProperty. Constructor Parameter at index $index has no default value and is not nullable.");
+                    throw new \LogicException("No value was set via EnvironmentValue. Constructor Parameter at index $index has no default value and is not nullable.");
                 }
                 continue;
             }

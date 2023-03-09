@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DevCircleDe\Attrenv\Util;
 
-use DevCircleDe\Attrenv\Attribute\EnvironmentProperty;
+use DevCircleDe\Attrenv\Attribute\EnvironmentValue;
 use DevCircleDe\Attrenv\ValueObject\MetaData;
 
 class MetaDataFactory
@@ -14,7 +14,7 @@ class MetaDataFactory
      */
     public function create(\ReflectionProperty|\ReflectionParameter $reflection): ?MetaData
     {
-        $attribute = $reflection->getAttributes(EnvironmentProperty::class)[0] ?? null;
+        $attribute = $reflection->getAttributes(EnvironmentValue::class)[0] ?? null;
         if (null === $attribute) {
             return null;
         }

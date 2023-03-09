@@ -3,22 +3,22 @@ declare(strict_types=1);
 
 namespace DevCircleDe\Attrenv\Tests\data;
 
-use DevCircleDe\Attrenv\Attribute\EnvironmentProperty;
+use DevCircleDe\Attrenv\Attribute\EnvironmentValue;
 
 class TestClassWithProperties
 {
-    #[EnvironmentProperty]
+    #[EnvironmentValue]
     private ?string $databaseName = null;
 
-    #[EnvironmentProperty]
+    #[EnvironmentValue]
     private ?string $databasePassword = null;
 
-    #[EnvironmentProperty]
+    #[EnvironmentValue]
     private ?int $databasePort = null;
 
     private array $options = [];
 
-    #[EnvironmentProperty('json', 'DB_OPTION_JSON')]
+    #[EnvironmentValue('json', 'DB_OPTION_JSON')]
     private array $optionsFromJson = [];
 
     /**
