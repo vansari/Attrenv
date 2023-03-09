@@ -1,0 +1,27 @@
+{
+    "name": "devcirclede/attrenv",
+    "description": "Library to mark a property or class parseable for EnvReader",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "vansari",
+            "email": "kurt.junker@posteo.de"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "DevCircleDe\\Attrenv\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DevCircleDe\\Attrenv\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "devcirclede/env-reader": "^0.4.0",
+        "phpunit/phpunit": "^10.0",
+        "symfony/var-dumper": "^6.2"
+    }
+}
