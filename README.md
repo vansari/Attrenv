@@ -1,3 +1,5 @@
+![workflow](https://github.com/devcircle-de/Attrenv/actions/workflows/php.yml/badge.svg)
+
 # Attrenv - Extension for DevCircleDe/EnvReader
 
 With the Attrenv you can declare classes to set properties or constructor args with Env Variable values.
