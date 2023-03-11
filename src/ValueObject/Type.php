@@ -12,17 +12,11 @@ final class Type
     ) {
     }
 
-    /**
-     * @return bool
-     */
     public function allowsNull(): bool
     {
         return $this->allowsNull;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;

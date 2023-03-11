@@ -42,10 +42,7 @@ class PropertyParser implements ExplicitParserInterface
         );
 
         $parsedProperties = array_map(
-            function (MetaData $metaData) use ($reflClass) {
-                $reflProperty = $reflClass->getProperty($metaData->getName());
-                return $this->getValueFactory()->createValueFromMetaData($metaData, $reflProperty);
-            },
+            fn (MetaData $metaData) => $this->getValueFactory()->createValueFromMetaData($metaData),
             $properties
         );
 

@@ -44,12 +44,12 @@ class ConstructorArgsParser implements ExplicitParserInterface
         );
 
         $parsedValues = array_map(
-            function (?MetaData $metaData) use ($reflClass): ?Value {
+            function (?MetaData $metaData): ?Value {
                 if (null === $metaData) {
                     return null;
                 }
-                $reflProperty = $reflClass->getProperty($metaData->getName());
-                return $this->getValueFactory()->createValueFromMetaData($metaData, $reflProperty);
+
+                return $this->getValueFactory()->createValueFromMetaData($metaData);
             },
             $metaDataCollection
         );

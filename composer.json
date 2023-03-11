@@ -25,7 +25,8 @@
         "symfony/var-dumper": "^6.2",
         "overtrue/phplint": "^9.0",
         "vimeo/psalm": "^5.7",
-        "slevomat/coding-standard": "^8.8"
+        "slevomat/coding-standard": "^8.8",
+        "mockery/mockery": "^1.5"
     },
     "scripts": {
         "lint": "vendor/bin/phplint src",

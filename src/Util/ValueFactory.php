@@ -24,7 +24,7 @@ class ValueFactory
         $this->envParser = $envParser ?? EnvParser::getInstance();
     }
 
-    public function createValueFromMetaData(MetaData $metaData, \ReflectionProperty $property): ?Value
+    public function createValueFromMetaData(MetaData $metaData): ?Value
     {
         /** @var EnvironmentValue $attr */
         $attr = $metaData->getAttribute()->newInstance();
@@ -32,30 +32,27 @@ class ValueFactory
         if (null === ($envName = $attr->getEnvName())) {
             $envName = strtoupper(preg_replace('/([A-Z])/', '_$1', $propertyName));
         }
-        if ($envType = $attr->getType()) {
-            if (null === $property->getType()) {
-                throw new \LogicException('Property has no typehint.');
-            }
-            $envTypes = [new Type($envType, $property->getType()->allowsNull())];
+        if ($attrType = $attr->getType()) {
+            $types = [new Type($attrType, $metaData->getType()->allowsNull())];
         } else {
-            $envTypes = $this->getVariableTypes($metaData->getType());
+            $types = $this->getVariableTypes($metaData->getType());
         }
         // Try to find the best matching type
-        foreach ($envTypes as $envType) {
+        foreach ($types as $type) {
             try {
                 return new Value(
                     $propertyName,
-                    $this->getEnvParser()->parse($envName, $envType->getType()),
-                    $envType->allowsNull()
+                    $this->getEnvParser()->parse($envName, $type->getType()),
+                    $type->allowsNull()
                 );
             } catch (ConvertionException $exception) {
                 // do nothing here
             } catch (NotFoundException $exception) {
-                if ($envType->allowsNull()) {
+                if ($type->allowsNull()) {
                     return new Value(
                         $propertyName,
                         null,
-                        $envType->allowsNull()
+                        $type->allowsNull()
                     );
                 }
             }

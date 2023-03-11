@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace DevCircleDe\Attrenv\Attribute;
 
 #[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_PARAMETER)]
+/**
+ * @psalm-api
+ */
 class EnvironmentValue
 {
     public function __construct(
