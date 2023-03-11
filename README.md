@@ -1,3 +1,5 @@
+![workflow](https://github.com/devcircle-de/Attrenv/actions/workflows/php.yml/badge.svg)
+
 # Attrenv - Extension for DevCircleDe/EnvReader
 
 With the Attrenv you can declare classes to set properties or constructor args with Env Variable values.
@@ -12,7 +14,7 @@ The EnvironmentValue only supports Types which the [EnvReader](https://github.co
 If you have created your classes you can automatically instanciate your class with the AttributeParser.
 
 Usage PropertyParser:
-```injectablephp
+```php
 <?php
 
 declare(strict_types=1);
@@ -45,7 +47,7 @@ class TestClassWithProperties
 ```
 Usage ConstructorArgs:
 
-```injectablephp
+```php
 <?php
 
 declare(strict_types=1);
@@ -77,7 +79,7 @@ class TestClassWithAttributeInConstructor
 ```
 
 Usage AttributeParser:
-```injectablephp
+```php
 <?php
 
 use DevCircleDe\Attrenv\Attribute\AttributeEnvParser;
