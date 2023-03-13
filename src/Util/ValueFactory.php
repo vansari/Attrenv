@@ -9,6 +9,7 @@ use DevCircleDe\Attrenv\ValueObject\MetaData;
 use DevCircleDe\Attrenv\ValueObject\Type;
 use DevCircleDe\Attrenv\ValueObject\Value;
 use DevCircleDe\EnvReader\EnvParser;
+use DevCircleDe\EnvReader\EnvParserInterface;
 use DevCircleDe\EnvReader\Exception\ConvertionException;
 use DevCircleDe\EnvReader\Exception\NotFoundException;
 
@@ -17,11 +18,11 @@ use DevCircleDe\EnvReader\Exception\NotFoundException;
  */
 class ValueFactory
 {
-    private EnvParser $envParser;
+    private EnvParserInterface $envParser;
 
-    public function __construct(?EnvParser $envParser = null)
+    public function __construct(?EnvParserInterface $envParser = null)
     {
-        $this->envParser = $envParser ?? EnvParser::getInstance();
+        $this->envParser = $envParser ?? EnvParser::create();
     }
 
     public function createValueFromMetaData(MetaData $metaData): ?Value
@@ -84,9 +85,9 @@ class ValueFactory
     }
 
     /**
-     * @return EnvParser
+     * @return EnvParserInterface
      */
-    public function getEnvParser(): EnvParser
+    public function getEnvParser(): EnvParserInterface
     {
         return $this->envParser;
     }
