@@ -13,4 +13,15 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
+    
+    <issueHandlers>
+        <PossiblyUnusedMethod>
+            <errorLevel type="suppress">
+                <referencedMethod name="DevCircleDe\Attrenv\Attribute\AttributeEnvParser::__construct"></referencedMethod>
+                <referencedMethod name="DevCircleDe\Attrenv\Attribute\EnvironmentValue::__construct"></referencedMethod>
+                <referencedMethod name="DevCircleDe\Attrenv\ValueObject\Type::allowsNull"></referencedMethod>
+                <referencedMethod name="DevCircleDe\Attrenv\ValueObject\Type::getType"></referencedMethod>
+            </errorLevel>
+        </PossiblyUnusedMethod>
+    </issueHandlers>
 </psalm>
