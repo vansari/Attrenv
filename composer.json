@@ -14,13 +14,17 @@
             "DevCircleDe\\Attrenv\\": "src/"
         }
     },
+    "require": {
+        "php": "^8.1",
+        
+    },
     "autoload-dev": {
         "psr-4": {
             "DevCircleDe\\Attrenv\\Tests\\": "tests/"
         }
     },
     "require-dev": {
-        "devcirclede/env-reader": "^0.4.0",
+        "devcirclede/env-reader": "*",
         "phpunit/phpunit": "^10.0",
         "symfony/var-dumper": "^6.2",
         "overtrue/phplint": "^9.0",
