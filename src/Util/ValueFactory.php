@@ -5,26 +5,33 @@ declare(strict_types=1);
 namespace DevCircleDe\Attrenv\Util;
 
 use DevCircleDe\Attrenv\Attribute\EnvironmentValue;
+use DevCircleDe\Attrenv\Decorator\EnvParserInterface;
 use DevCircleDe\Attrenv\ValueObject\MetaData;
 use DevCircleDe\Attrenv\ValueObject\Type;
 use DevCircleDe\Attrenv\ValueObject\Value;
-use DevCircleDe\EnvReader\EnvParser;
-use DevCircleDe\EnvReader\EnvParserInterface;
+use DevCircleDe\EnvReader\EnvParserInterface as EnvReaderInterface;
 use DevCircleDe\EnvReader\Exception\ConvertionException;
 use DevCircleDe\EnvReader\Exception\NotFoundException;
+use DI\Attribute\Inject;
 
 /**
  * @psalm-api
  */
 class ValueFactory
 {
-    private EnvParserInterface $envParser;
-
-    public function __construct(?EnvParserInterface $envParser = null)
-    {
-        $this->envParser = $envParser ?? EnvParser::create();
+    /**
+     * @param EnvParserInterface|EnvReaderInterface $envParser
+     */
+    public function __construct(
+        #[Inject]
+        private readonly EnvParserInterface|EnvReaderInterface $envParser
+    ) {
     }
 
+    /**
+     * @param MetaData $metaData
+     * @return Value|null
+     */
     public function createValueFromMetaData(MetaData $metaData): ?Value
     {
         /** @var EnvironmentValue $attr */
@@ -62,16 +69,20 @@ class ValueFactory
         return null;
     }
 
-
+    /**
+     * @param \ReflectionNamedType|\ReflectionUnionType $type
+     * @return array|Type[]
+     */
     private function getVariableTypes(\ReflectionNamedType|\ReflectionUnionType $type): array
     {
         $types = [];
         if ($type instanceof \ReflectionUnionType) {
-            foreach ($type->getTypes() as $unionType) {
-                if ($unionType instanceof \ReflectionIntersectionType) {
+            /** @psalm-var \ReflectionIntersectionType|\ReflectionNamedType $subType */
+            foreach ($type->getTypes() as $subType) {
+                if ($subType instanceof \ReflectionIntersectionType) {
                     continue;
                 }
-                $types = array_merge($types, $this->getVariableTypes($unionType));
+                $types = array_merge($types, $this->getVariableTypes($subType));
             }
 
             return $types;
@@ -85,9 +96,9 @@ class ValueFactory
     }
 
     /**
-     * @return EnvParserInterface
+     * @return EnvParserInterface|EnvReaderInterface
      */
-    public function getEnvParser(): EnvParserInterface
+    public function getEnvParser(): EnvParserInterface|EnvReaderInterface
     {
         return $this->envParser;
     }

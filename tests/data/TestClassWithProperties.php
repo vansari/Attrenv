@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace DevCircleDe\Attrenv\Tests\data;
 
-use DevCircleDe\Attrenv\Attribute\AttributeEnvParser;
 use DevCircleDe\Attrenv\Attribute\EnvironmentValue;
-use DevCircleDe\Attrenv\Parser\Property\PropertyParser;
-use DevCircleDe\Attrenv\Util\MetaDataFactory;
-use DevCircleDe\Attrenv\Util\ValueFactory;
 
-#[AttributeEnvParser(new PropertyParser(new MetaDataFactory(), new ValueFactory()))]
 class TestClassWithProperties
 {
     #[EnvironmentValue]
