@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace DevCircleDe\Attrenv\Util;
 
 use DevCircleDe\Attrenv\Attribute\EnvironmentValue;
-use DevCircleDe\Attrenv\Decorator\EnvParserInterface;
+use DevCircleDe\Attrenv\Decorator\EnvParserDecorator;
 use DevCircleDe\Attrenv\ValueObject\MetaData;
 use DevCircleDe\Attrenv\ValueObject\Type;
 use DevCircleDe\Attrenv\ValueObject\Value;
-use DevCircleDe\EnvReader\EnvParserInterface as EnvReaderInterface;
 use DevCircleDe\EnvReader\Exception\ConvertionException;
 use DevCircleDe\EnvReader\Exception\NotFoundException;
 use DI\Attribute\Inject;
@@ -20,11 +19,11 @@ use DI\Attribute\Inject;
 class ValueFactory
 {
     /**
-     * @param EnvParserInterface|EnvReaderInterface $envParser
+     * @param EnvParserDecorator $envParser
      */
     public function __construct(
         #[Inject]
-        private readonly EnvParserInterface|EnvReaderInterface $envParser
+        private readonly EnvParserDecorator $envParser
     ) {
     }
 
@@ -96,9 +95,9 @@ class ValueFactory
     }
 
     /**
-     * @return EnvParserInterface|EnvReaderInterface
+     * @return EnvParserDecorator
      */
-    public function getEnvParser(): EnvParserInterface|EnvReaderInterface
+    public function getEnvParser(): EnvParserDecorator
     {
         return $this->envParser;
     }

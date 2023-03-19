@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DevCircleDe\Attrenv\Configuration;
 
+use DevCircleDe\Attrenv\Decorator\EnvParserDecorator;
 use DevCircleDe\Attrenv\Decorator\EnvParserInterface;
 use DevCircleDe\Attrenv\Util\ValueFactory;
 use DevCircleDe\EnvReader\EnvParser;
@@ -21,8 +22,8 @@ class AttrenvConfig
             ]);
         }
         $builder->addDefinitions([
-            ValueFactory::class => fn (Container $c): ValueFactory
-                => new ValueFactory($c->get(EnvParserInterface::class))
+            EnvParserDecorator::class => fn (Container $c): EnvParserDecorator
+                => new EnvParserDecorator($c->get(EnvParserInterface::class))
         ]);
         $rootPath = dirname(__DIR__, 5);
         $configFile = $rootPath . DIRECTORY_SEPARATOR . '/config/attrenv-config.php';
