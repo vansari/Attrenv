@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DevCircleDe\Attrenv\Tests\Parser;
 
+use DevCircleDe\Attrenv\Decorator\EnvParserDecorator;
 use DevCircleDe\Attrenv\Parser\AttributeParser;
 use DevCircleDe\Attrenv\Tests\data\TestClassWithAttributeInConstructor;
 use DevCircleDe\Attrenv\Tests\data\TestClassWithAttributeInConstructorAndProperty;
@@ -29,7 +30,7 @@ class AttributeParserTest extends TestCase
         putenv('DATABASE_PORT=1234');
         putenv("DB_OPTION_JSON={\"name\":\"secretName\", \"values\":[{\"value1\":123},{\"value2\":\"baz\"}]}");
 
-        $parser = new AttributeParser(new MetaDataFactory(), new ValueFactory(new EnvParser()));
+        $parser = new AttributeParser(new MetaDataFactory(), new ValueFactory(new EnvParserDecorator(new EnvParser())));
 
         /** @var TestClassWithAttributeInConstructorAndProperty $testClassObject */
         $testClassObject = $parser->parse(TestClassWithAttributeInConstructorAndProperty::class);
@@ -55,7 +56,7 @@ class AttributeParserTest extends TestCase
         putenv('DATABASE_PORT=1234');
         putenv("DB_OPTION_JSON={\"name\":\"secretName\", \"values\":[{\"value1\":123},{\"value2\":\"baz\"}]}");
 
-        $parser = new AttributeParser(new MetaDataFactory(), new ValueFactory(new EnvParser()));
+        $parser = new AttributeParser(new MetaDataFactory(), new ValueFactory(new EnvParserDecorator(new EnvParser())));
 
         /** @var TestClassWithProperties $testClassObject */
         $testClassObject = $parser->parse(TestClassWithProperties::class);
@@ -80,7 +81,7 @@ class AttributeParserTest extends TestCase
         putenv('DATABASE_PORT=1234');
         putenv("DB_OPTION_JSON={\"name\":\"secretName\", \"values\":[{\"value1\":123},{\"value2\":\"baz\"}]}");
 
-        $parser = new AttributeParser(new MetaDataFactory(), new ValueFactory(new EnvParser()));
+        $parser = new AttributeParser(new MetaDataFactory(), new ValueFactory(new EnvParserDecorator(new EnvParser())));
 
         /** @var TestClassWithAttributeInConstructor $testClassObject */
         $testClassObject = $parser->parse(TestClassWithAttributeInConstructor::class);

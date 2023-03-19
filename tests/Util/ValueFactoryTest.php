@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace DevCircleDe\Attrenv\Tests\Util;
 
 use DevCircleDe\Attrenv\Attribute\EnvironmentValue;
+use DevCircleDe\Attrenv\Decorator\EnvParserDecorator;
+use DevCircleDe\Attrenv\Decorator\EnvParserInterface;
 use DevCircleDe\Attrenv\Util\ValueFactory;
 use DevCircleDe\Attrenv\ValueObject\MetaData;
 use DevCircleDe\Attrenv\ValueObject\Value;
-use DevCircleDe\EnvReader\EnvParserInterface;
 use DevCircleDe\EnvReader\Exception\ConvertionException;
 use DevCircleDe\EnvReader\Exception\NotFoundException;
 use PHPUnit\Framework\TestCase;
@@ -37,7 +38,7 @@ class ValueFactoryTest extends TestCase
         $reflType->allows()->getName()->andReturn('string');
 
         $metaData = new MetaData('fooBar', $reflType, $reflAttribute);
-        $valueFactory = new ValueFactory($envParser);
+        $valueFactory = new ValueFactory(new EnvParserDecorator($envParser));
         $value = $valueFactory->createValueFromMetaData($metaData);
 
         $this->assertIsString($value->getValue());
@@ -72,7 +73,7 @@ class ValueFactoryTest extends TestCase
         $reflUnionType->allows()->getTypes()->andReturn([$reflTypeString, $reflTypeInt]);
 
         $metaData = new MetaData('fooBar', $reflUnionType, $reflAttribute);
-        $valueFactory = new ValueFactory($envParser);
+        $valueFactory = new ValueFactory(new EnvParserDecorator($envParser));
         $value = $valueFactory->createValueFromMetaData($metaData);
 
         $this->assertIsInt($value->getValue());
@@ -104,7 +105,7 @@ class ValueFactoryTest extends TestCase
         $reflUnionType->allows()->getTypes()->andReturn([$reflIntersection, $reflTypeInt]);
 
         $metaData = new MetaData('fooBar', $reflUnionType, $reflAttribute);
-        $valueFactory = new ValueFactory($envParser);
+        $valueFactory = new ValueFactory(new EnvParserDecorator($envParser));
         $value = $valueFactory->createValueFromMetaData($metaData);
 
         $this->assertIsInt($value->getValue());
@@ -131,7 +132,7 @@ class ValueFactoryTest extends TestCase
         $reflTypeString->allows()->getName()->andReturn('string');
 
         $metaData = new MetaData('fooBar', $reflTypeString, $reflAttribute);
-        $valueFactory = new ValueFactory($envParser);
+        $valueFactory = new ValueFactory(new EnvParserDecorator($envParser));
         $value = $valueFactory->createValueFromMetaData($metaData);
 
         $this->assertNull($value);
@@ -156,7 +157,7 @@ class ValueFactoryTest extends TestCase
         $reflTypeString->allows()->getName()->andReturn('string');
 
         $metaData = new MetaData('fooBar', $reflTypeString, $reflAttribute);
-        $valueFactory = new ValueFactory($envParser);
+        $valueFactory = new ValueFactory(new EnvParserDecorator($envParser));
         $value = $valueFactory->createValueFromMetaData($metaData);
 
         $this->assertNotNull($value);
