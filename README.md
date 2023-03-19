@@ -2,16 +2,25 @@
 
 # Attrenv - Extension for DevCircleDe/EnvReader
 
-With the Attrenv you can declare classes to set properties or constructor args with Env Variable values.
+With the Attrenv you can instantiate classes with Env Variable values.
 
-It is recommended that you have installed the DevCircleDe/EnvReader.
+### Installation
 
+```shell
+composer require devcirclede/attrenv
+```
+
+(It is recommended that you have installed the [EnvReader](https://github.com/devcircle-de/EnvReader).)
+
+### Description
 The Parser uses the property name as the ENV Name. But you can also pass a custom ENV Name to the Attribute.
 Each Parameter/Property must be Type hinted, or you must declare the Type in the EnvironmentValue Attribute. 
 
 The EnvironmentValue only supports Types which the [EnvReader](https://github.com/devcircle-de/EnvReader) supports.
 
 If you have created your classes you can automatically load the Values from Env and instantiate your class with the AttributeParser.
+
+#### USAGE
 
 Usage Attrenv:
 ```php
