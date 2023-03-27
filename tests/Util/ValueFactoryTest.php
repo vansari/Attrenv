@@ -139,9 +139,10 @@ class ValueFactoryTest extends TestCase
     }
 
     /**
+     * Covers the Problem if the declared data type was not found in the Env Parser Configuration
      * @covers ::createValueFromMetaData
      */
-    public function testCreateValueFromMetaDataReturnValueWithNullByNotFoundException(): void
+    public function testCreateValueFromMetaDataReturnNullByNotFoundException(): void
     {
         $envParser = \Mockery::mock(EnvParserInterface::class);
         $envParser->shouldReceive('parse')->andThrows(NotFoundException::class);
@@ -160,10 +161,6 @@ class ValueFactoryTest extends TestCase
         $valueFactory = new ValueFactory(new EnvParserDecorator($envParser));
         $value = $valueFactory->createValueFromMetaData($metaData);
 
-        $this->assertNotNull($value);
-        $this->assertInstanceOf(Value::class, $value);
-        $this->assertSame('fooBar', $value->getName());
-        $this->assertNull($value->getValue());
-        $this->assertTrue($value->isNullable());
+        $this->assertNull($value);
     }
 }

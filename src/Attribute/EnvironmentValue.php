@@ -11,8 +11,9 @@ namespace DevCircleDe\Attrenv\Attribute;
 class EnvironmentValue
 {
     public function __construct(
-        private readonly null|string $type = null,
         private readonly null|string $envName = null,
+        private readonly mixed $defaultValue = null,
+        private readonly null|string $type = null,
     ) {
     }
 
@@ -30,5 +31,13 @@ class EnvironmentValue
     public function getType(): ?string
     {
         return $this->type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDefaultValue(): mixed
+    {
+        return $this->defaultValue;
     }
 }

@@ -6,22 +6,20 @@ namespace DevCircleDe\Attrenv\Tests\data;
 
 use DevCircleDe\Attrenv\Attribute\EnvironmentValue;
 
-class TestClassWithProperties
+class TestClassWithAttributeInConstructorAndDefaultValues
 {
-    #[EnvironmentValue]
-    private ?string $databaseName = null;
-
-    #[EnvironmentValue]
-    private ?string $databasePassword = null;
-
-    #[EnvironmentValue]
-    private ?int $databasePort = null;
-
-    private array $options = [];
-
-    #[EnvironmentValue(envName: 'DB_OPTION_JSON', type: 'json')]
-    private array $optionsFromJson = [];
-
+    public function __construct(
+        #[EnvironmentValue(defaultValue: 'fooBar')]
+        private readonly string $databaseName,
+        #[EnvironmentValue]
+        private readonly string $databasePassword,
+        #[EnvironmentValue(defaultValue: 1234)]
+        private readonly int $databasePort,
+        private readonly array $options = [],
+        #[EnvironmentValue(envName: 'DB_OPTION_JSON', type: 'json')]
+        private readonly array $optionsFromJson = [],
+    ) {
+    }
     /**
      * @return string|null
      */

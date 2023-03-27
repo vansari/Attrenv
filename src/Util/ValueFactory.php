@@ -47,21 +47,17 @@ class ValueFactory
         // Try to find the best matching type
         foreach ($types as $type) {
             try {
+                $envValue = $this->getEnvParser()->parse($envName, $type->getType());
+                if (null === $envValue && $attr->getDefaultValue()) {
+                    $envValue = $attr->getDefaultValue();
+                }
                 return new Value(
                     $propertyName,
-                    $this->getEnvParser()->parse($envName, $type->getType()),
+                    $envValue,
                     $type->allowsNull()
                 );
-            } catch (ConvertionException $exception) {
+            } catch (ConvertionException | NotFoundException $exception) {
                 // do nothing here
-            } catch (NotFoundException $exception) {
-                if ($type->allowsNull()) {
-                    return new Value(
-                        $propertyName,
-                        null,
-                        $type->allowsNull()
-                    );
-                }
             }
         }
 
