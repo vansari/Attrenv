@@ -26,12 +26,8 @@ Usage Attrenv:
 ```php
 <?php
 
-use DevCircleDe\Attrenv\Attribute\AttributeEnvParser;
 use DevCircleDe\Attrenv\Attribute\EnvironmentValue;
-use DevCircleDe\Attrenv\Parser\AttributeParser;
-use DevCircleDe\Attrenv\Parser\Property\PropertyParser;
-use DevCircleDe\Attrenv\Util\MetaDataFactory;
-use DevCircleDe\Attrenv\Util\ValueFactory;
+use DevCircleDe\Attrenv\Attrenv;
 
 class EnvConfiguredClass {
 
@@ -41,7 +37,7 @@ class EnvConfiguredClass {
     #[EnvironmentValue(envName: 'ENV_NAME')]
     private string $betterInternalName;
     
-    #[EnvironmentValue(type: 'json')]
+    #[EnvironmentValue(type: 'json', default: ['simple' => 'better'])]
     private array $configArrayJson;
     
     public function __construct(
