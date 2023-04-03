@@ -18,7 +18,7 @@ class TestClassWithAttributeInConstructorAndProperty
 
     private array $options;
 
-    #[EnvironmentValue(type: 'json', envName: 'DB_OPTION_JSON')]
+    #[EnvironmentValue(envName: 'DB_OPTION_JSON', type: 'json')]
     private array $config = [];
 
     public function __construct(

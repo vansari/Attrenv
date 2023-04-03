@@ -3,4 +3,6 @@
 /phpcs.xml export-ignore
 /phpunit.xml export-ignore
 /psalm.xml export-ignore
-README.md export-ignore
+/README.md export-ignore
+/Dockerfile export-ignore
+/docker-compose.yml export-ignore

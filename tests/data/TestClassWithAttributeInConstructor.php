@@ -16,7 +16,7 @@ class TestClassWithAttributeInConstructor
         #[EnvironmentValue]
         private readonly int $databasePort,
         private readonly array $options = [],
-        #[EnvironmentValue('json', 'DB_OPTION_JSON')]
+        #[EnvironmentValue(envName: 'DB_OPTION_JSON', type: 'json')]
         private readonly array $optionsFromJson = [],
     ) {
     }
