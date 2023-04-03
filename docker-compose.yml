@@ -6,3 +6,5 @@ services:
       context: .
     volumes:
       - './:/code'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
